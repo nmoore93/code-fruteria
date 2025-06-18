@@ -8,13 +8,15 @@ type Props = {
   y: number;
   width: number;
   height: number;
+  minWidth?: number;
+  minHeight?: number;
   onClose: () => void;
   onMove: (dx: number, dy: number) => void;
   onResize: (dw: number, dh: number) => void;
 };
 
 const ResizableDraggablePanel: React.FC<Props> = ({
-  id, title, content, x, y, width, height, onClose, onMove, onResize
+  id, title, content, x, y, width, height, minWidth, minHeight, onClose, onMove, onResize
 }) => {
   const dragStart = useRef<{ x: number; y: number } | null>(null);
   const resizeStart = useRef<{ x: number; y: number; width: number; height: number } | null>(null);
@@ -22,6 +24,7 @@ const ResizableDraggablePanel: React.FC<Props> = ({
   // Drag logic
   const handleMouseDown = (e: React.MouseEvent) => {
     dragStart.current = { x: e.clientX, y: e.clientY };
+    window.dispatchEvent(new Event("panel-drag-start")); // Show grid overlay
     const handleMouseMove = (moveEvent: MouseEvent) => {
       if (dragStart.current) {
         const dx = moveEvent.clientX - dragStart.current.x;
@@ -34,6 +37,7 @@ const ResizableDraggablePanel: React.FC<Props> = ({
       dragStart.current = null;
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
+      window.dispatchEvent(new Event("panel-drag-end")); // Hide grid overlay
     };
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
@@ -67,6 +71,8 @@ const ResizableDraggablePanel: React.FC<Props> = ({
         top: y,
         width,
         height,
+        minWidth,
+        minHeight,
         background: '#232b3e',
         borderRadius: 8,
         boxShadow: '0 2px 8px #0006',

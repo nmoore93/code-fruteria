@@ -5,6 +5,7 @@ import AboutPanel from './panels/AboutPanel';
 import ResizableDraggablePanel from './components/ResizableDraggablePanel';
 import TermsIcon from './Icons/TermsIcon';
 import AboutIcon from './Icons/AboutIcon';
+import { MainWorkspace } from './components/MainWorkspace';
 
 // Panel data
 const panelList = [
@@ -30,10 +31,34 @@ const getDefaultPanelPosition = (count: number) => ({
   height: 420, 
 });
 
+const GRID_ROWS = 2;
+const GRID_COLS = 2;
+
+const getGridCellPosition = (
+  row: number,
+  col: number,
+  containerWidth: number,
+  containerHeight: number,
+  navBarHeight: number
+) => {
+  const cellWidth = containerWidth / GRID_COLS;
+  const cellHeight = containerHeight / GRID_ROWS;
+  return {
+    x: Math.round(col * cellWidth),
+    y: Math.round(row * cellHeight + navBarHeight),
+    width: Math.round(cellWidth),
+    height: Math.round(cellHeight),
+  };
+};
+
+const NAV_BAR_HEIGHT = 56; // px, must match your nav bar minHeight
+
 const App: FC = () => {
   const [openPanels, setOpenPanels] = useState<OpenPanel[]>([]);
   const [dragNavPanelKey, setDragNavPanelKey] = useState<string | null>(null);
   const [navOpen, setNavOpen] = useState<boolean>(false);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const [dropCell, setDropCell] = useState<{ row: number; col: number } | null>(null);
 
   // Drag from nav: set key in dataTransfer
   const onNavDragStart = (key: string) => (e: DragEvent<HTMLLIElement>) => {
@@ -41,16 +66,37 @@ const App: FC = () => {
     e.dataTransfer.setData('panelKey', key);
   };
 
-  // Drop on main: open new panel
+  // Called by MainWorkspace to update container size and drop cell
+  const handleGridDropInfo = (info: { cell: { row: number; col: number } | null, size: { width: number; height: number } }) => {
+    setDropCell(info.cell);
+    setContainerSize(info.size);
+  };
+
+  // Drop on main: open new panel at grid cell
   const onMainDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const key = e.dataTransfer.getData('panelKey');
     if (!key) return;
     const panelDef = panelList.find(p => p.key === key);
     if (!panelDef) return;
-    // Prevent duplicate panels of same id at same position
     const id = `${key}-${Date.now()}`;
-    const count = openPanels.length;
+    let x = 60, y = NAV_BAR_HEIGHT + 10, width = 700, height = 420;
+    if (dropCell && containerSize.width && containerSize.height) {
+      // Subtract nav bar height from available height for grid
+      const availableHeight = containerSize.height - NAV_BAR_HEIGHT;
+      const pos = getGridCellPosition(
+        dropCell.row,
+        dropCell.col,
+        containerSize.width,
+        availableHeight,
+        NAV_BAR_HEIGHT
+      );
+      // Clamp width/height to not exceed window
+      width = Math.min(pos.width, containerSize.width);
+      height = Math.min(pos.height, availableHeight);
+      x = pos.x;
+      y = pos.y;
+    }
     setOpenPanels([
       ...openPanels,
       {
@@ -58,7 +104,10 @@ const App: FC = () => {
         key: panelDef.key,
         title: panelDef.title,
         content: panelDef.content,
-        ...getDefaultPanelPosition(count),
+        x,
+        y,
+        width,
+        height,
       },
     ]);
     setDragNavPanelKey(null);
@@ -159,104 +208,113 @@ const App: FC = () => {
       )}
 
       {/* Panel Area */}
-      <main
-        style={{
-          flex: 1,
-          position: 'relative',
-          background: '#232b3e',
-          overflow: 'hidden',
-        }}
+      <MainWorkspace
         onDrop={onMainDrop}
         onDragOver={onMainDragOver}
+        onGridDropInfo={handleGridDropInfo}
+        gridRows={GRID_ROWS}
+        gridCols={GRID_COLS}
       >
-        {/* Top nav branding */}
-        <div
+        <main
           style={{
+            flex: 1,
+            position: 'relative',
+            background: '#232b3e',
+            overflow: 'hidden',
+            height: '100%',
             width: '100%',
-            background: 'linear-gradient(90deg, #2b3556 0%, #3e4a6b 100%)', 
-            color: '#fff',
-            padding: '0.5rem 1.5rem',
-            fontWeight: 600,
-            fontSize: 20,
-            letterSpacing: 1,
-            position: 'sticky',
-            top: 0,
-            zIndex: 2000,
-            display: 'flex',
-            alignItems: 'center',
-            boxShadow: '0 2px 8px #0002',
-            minHeight: 56,
-            borderBottom: '1px solid #3e4a6b',
           }}
         >
-          {/* Hamburger/X icon */}
-          <button
-            onClick={() => setNavOpen((v) => !v)}
+          {/* Top nav branding */}
+          <div
             style={{
-              background: 'transparent',
-              border: 'none',
+              width: '100%',
+              background: 'linear-gradient(90deg, #2b3556 0%, #3e4a6b 100%)',
               color: '#fff',
-              fontSize: 26,
-              cursor: 'pointer',
-              marginRight: 20,
+              padding: '0.5rem 1.5rem',
+              fontWeight: 600,
+              fontSize: 20,
+              letterSpacing: 1,
+              position: 'sticky',
+              top: 0,
+              zIndex: 2000,
               display: 'flex',
               alignItems: 'center',
-              padding: 0,
-              height: 40,
-              width: 40,
-              borderRadius: 8,
-              transition: 'background 0.2s',
-              boxShadow: navOpen ? '0 2px 8px #0002' : undefined,
+              boxShadow: '0 2px 8px #0002',
+              minHeight: NAV_BAR_HEIGHT,
+              borderBottom: '1px solid #3e4a6b',
             }}
-            aria-label="Toggle navigation"
           >
-            <span style={{ display: 'inline-block', width: 28, height: 28 }}>
-              {navOpen ? (
-                // X icon
-                <svg width="28" height="28" viewBox="0 0 28 28">
-                  <line x1="7" y1="7" x2="21" y2="21" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-                  <line x1="21" y1="7" x2="7" y2="21" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-                </svg>
-              ) : (
-                // Hamburger icon
-                <svg width="28" height="28" viewBox="0 0 28 28">
-                  <rect y="6" width="28" height="3" rx="1.5" fill="#fff" />
-                  <rect y="13" width="28" height="3" rx="1.5" fill="#fff" />
-                  <rect y="20" width="28" height="3" rx="1.5" fill="#fff" />
-                </svg>
-              )}
+            {/* Hamburger/X icon */}
+            <button
+              onClick={() => setNavOpen((v) => !v)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#fff',
+                fontSize: 26,
+                cursor: 'pointer',
+                marginRight: 20,
+                display: 'flex',
+                alignItems: 'center',
+                padding: 0,
+                height: 40,
+                width: 40,
+                borderRadius: 8,
+                transition: 'background 0.2s',
+                boxShadow: navOpen ? '0 2px 8px #0002' : undefined,
+              }}
+              aria-label="Toggle navigation"
+            >
+              <span style={{ display: 'inline-block', width: 28, height: 28 }}>
+                {navOpen ? (
+                  // X icon
+                  <svg width="28" height="28" viewBox="0 0 28 28">
+                    <line x1="7" y1="7" x2="21" y2="21" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+                    <line x1="21" y1="7" x2="7" y2="21" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+                  </svg>
+                ) : (
+                  // Hamburger icon
+                  <svg width="28" height="28" viewBox="0 0 28 28">
+                    <rect y="6" width="28" height="3" rx="1.5" fill="#fff" />
+                    <rect y="13" width="28" height="3" rx="1.5" fill="#fff" />
+                    <rect y="20" width="28" height="3" rx="1.5" fill="#fff" />
+                  </svg>
+                )}
+              </span>
+            </button>
+            <span style={{
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              fontSize: 22,
+              letterSpacing: 2,
+              color: '#fff',
+              textShadow: '0 1px 2px #0006',
+              userSelect: 'none',
+              textTransform: 'uppercase',
+            }}>
+              fruteria
             </span>
-          </button>
-          <span style={{
-            fontFamily: 'monospace',
-            fontWeight: 700,
-            fontSize: 22,
-            letterSpacing: 2,
-            color: '#fff',
-            textShadow: '0 1px 2px #0006',
-            userSelect: 'none',
-            textTransform: 'uppercase',
-          }}>
-            fruteria
-          </span>
-        </div>
-        {openPanels.length === 0 ? (
-          <div style={{ color: '#888', textAlign: 'center', marginTop: '2rem' }}>
-            No panels open.<br />
-            Drag one from the navigation bar.
           </div>
-        ) : (
-          openPanels.map((panel) => (
-            <ResizableDraggablePanel
-              key={panel.id}
-              {...panel}
-              onClose={() => handleClose(panel.id)}
-              onMove={(dx, dy) => handlePanelMove(panel.id, dx, dy)}
-              onResize={(dw, dh) => handlePanelResize(panel.id, dw, dh)}
-            />
-          ))
-       )}
-      </main>
+          {openPanels.length === 0 ? (
+            <div style={{ color: '#888', textAlign: 'center', marginTop: '2rem' }}>
+              No panels open.<br />
+              Drag one from the navigation bar.
+            </div>
+          ) : (
+            openPanels.map((panel) => (
+              <ResizableDraggablePanel
+                key={panel.id}
+                {...panel}
+                onClose={() => handleClose(panel.id)}
+                onMove={(dx, dy) => handlePanelMove(panel.id, dx, dy)}
+                onResize={(dw, dh) => handlePanelResize(panel.id, dw, dh)}
+                // Add a prop to indicate dragging for overlay z-index if needed
+              />
+            ))
+          )}
+        </main>
+      </MainWorkspace>
     </div>
   );
 };
