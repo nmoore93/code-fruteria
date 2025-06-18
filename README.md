@@ -1,3 +1,17 @@
+# Code Fruteria
+
+This repository contains a mock login implementation for development and testing purposes.
+
+## Mock Login
+
+- Located in `auth/mockLogin.ts`
+- Exports a `mockLogin` function that simulates user authentication.
+- Example users:
+  - admin / password
+  - user / password
+
+---
+
 # Code Fruit challenge
 
 This is a minimal version of the code-fruit repo, containing only the essential structure and a sample swap-terms-form implementation.

@@ -1,4 +1,4 @@
-import React, { useState, DragEvent, FC, StrictMode } from 'react';
+import React, { useState, DragEvent, FC, StrictMode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import FruitBook from './panels/FruitBookPanel';
 import AboutPanel from './panels/AboutPanel';
@@ -6,6 +6,8 @@ import ResizableDraggablePanel from './components/ResizableDraggablePanel';
 import TermsIcon from './Icons/TermsIcon';
 import AboutIcon from './Icons/AboutIcon';
 import { MainWorkspace } from './components/MainWorkspace';
+import LoginComponent from './components/LoginComponent';
+import UserProfile from './components/UserProfile';
 
 // Panel data
 const panelList = [
@@ -52,6 +54,8 @@ const getGridCellPosition = (
 };
 
 const NAV_BAR_HEIGHT = 56; // px, must match your nav bar minHeight
+
+const isLoggedIn = () => localStorage.getItem('isLoggedIn') === 'true';
 
 const App: FC = () => {
   const [openPanels, setOpenPanels] = useState<OpenPanel[]>([]);
@@ -283,6 +287,7 @@ const App: FC = () => {
                 )}
               </span>
             </button>
+            {/* App title */}
             <span style={{
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -295,6 +300,15 @@ const App: FC = () => {
             }}>
               fruteria
             </span>
+            {/* Spacer to push UserProfile to the right */}
+            <div style={{ flex: 1 }} />
+            {/* UserProfile on the right */}
+            <div style={{ marginRight: 32 }}>
+              <UserProfile onLogout={() => {
+                localStorage.removeItem('isLoggedIn');
+                window.dispatchEvent(new Event('login-success'));
+              }} />
+            </div>
           </div>
           {openPanels.length === 0 ? (
             <div style={{ color: '#888', textAlign: 'center', marginTop: '2rem' }}>
@@ -319,9 +333,40 @@ const App: FC = () => {
   );
 };
 
+const Root: React.FC = () => {
+  const [loggedIn, setLoggedIn] = useState(isLoggedIn());
+
+  useEffect(() => {
+    // Listen for login event from LoginComponent
+    const handler = () => setLoggedIn(isLoggedIn());
+    window.addEventListener('login-success', handler);
+    return () => window.removeEventListener('login-success', handler);
+  }, []);
+
+  if (!loggedIn) {
+    return <LoginComponent />;
+  }
+  return <App />;
+};
+
+// Patch LoginComponent to set login flag and dispatch event
+// (You can move this logic inside LoginComponent if you prefer)
+const origLoginComponent = LoginComponent;
+(LoginComponent as any) = (props: any) => {
+  const [_, forceUpdate] = React.useReducer(x => x + 1, 0);
+  return React.createElement(origLoginComponent, {
+    ...props,
+    onLoginSuccess: () => {
+      localStorage.setItem('isLoggedIn', 'true');
+      window.dispatchEvent(new Event('login-success'));
+      forceUpdate();
+    }
+  });
+};
+
 ReactDOM.render(
   <StrictMode>
-    <App />
+    <Root />
   </StrictMode>,
   document.getElementById('root')
 );
