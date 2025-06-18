@@ -34,7 +34,7 @@ Welcome to the juiciest repo on GitHub! This is your backstage pass to a mock lo
 
 # 🍇 Code Fruit Challenge
 
-This repo is a stripped-down, vitamin-packed version of the code-fruit project. It’s got just enough pulp to get you started, including a sample swap-terms-form.
+This repo is a stripped-down, vitamin-packed version of the code-fruit project. It’s got just enough pulp to get you started.
 
 🎉 **Calling all code wizards and fruit fanatics!** 🍌🍎
 
@@ -50,6 +50,10 @@ But, like a forgotten banana, things have gotten a little… mushy:
 - _Some files are just lying around unused—let’s clean up the codebase and compost the leftovers!_
 
 Who’s ready to modernize this digital fruit bazaar? 🍇💻
+
+![Screenshot of Login](./src/images/login.png)
+![Screenshot of Code Fruteria app](./src/images/fruitTrade.png)
+![Screenshot of User Profile](./src/images/user.png)
 
 ## 🍉 Acceptance Criteria
 
