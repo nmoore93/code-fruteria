@@ -1,4 +1,4 @@
-# equities-client-small
+# Fruteria
 
 This is a minimal version of the equities-client repo, containing only the essential structure and a sample swap-terms-form implementation.
 
