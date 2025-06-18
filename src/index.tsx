@@ -57,6 +57,8 @@ const NAV_BAR_HEIGHT = 56; // px, must match your nav bar minHeight
 
 const isLoggedIn = () => localStorage.getItem('isLoggedIn') === 'true';
 
+const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes
+
 const App: FC = () => {
   const [openPanels, setOpenPanels] = useState<OpenPanel[]>([]);
   const [dragNavPanelKey, setDragNavPanelKey] = useState<string | null>(null);
@@ -147,6 +149,32 @@ const App: FC = () => {
       )
     );
   };
+
+  // Inactivity logout timer
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    const resetTimer = () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        localStorage.removeItem('isLoggedIn');
+        window.dispatchEvent(new Event('login-success'));
+      }, INACTIVITY_LIMIT);
+    };
+
+    const activityEvents = ['mousemove', 'keydown', 'mousedown', 'touchstart'];
+    activityEvents.forEach(event =>
+      window.addEventListener(event, resetTimer)
+    );
+    resetTimer();
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      activityEvents.forEach(event =>
+        window.removeEventListener(event, resetTimer)
+      );
+    };
+  }, []);
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>

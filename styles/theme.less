@@ -1,0 +1,45 @@
+// Theme Variables
+@primary-color: #4CAF50;
+@secondary-color: #FFC107;
+@background-color: #F5F5F5;
+@text-color: #333;
+@border-radius: 4px;
+
+// Global Styles
+body {
+  background: @background-color;
+  color: @text-color;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: @primary-color;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.button {
+  background: @primary-color;
+  color: #fff;
+  border: none;
+  border-radius: @border-radius;
+  padding: 10px 20px;
+  cursor: pointer;
+  &:hover {
+    background: darken(@primary-color, 10%);
+  }
+}
+
+.header {
+  background: @secondary-color;
+  padding: 16px;
+  border-radius: @border-radius;
+  color: #fff;
+  font-size: 1.5em;
+}
+
+// Add more theme styles as needed...
