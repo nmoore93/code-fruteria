@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * AboutPanel displays information about the application.
+ */
 const AboutPanel: React.FC = () => (
   <div style={{ padding: 24, color: '#e0e0e0', fontFamily: 'monospace' }}>
     <h2 style={{ color: '#fff', fontWeight: 700, fontSize: 22, margin: 0 }}>About</h2>

@@ -1,10 +1,8 @@
 {
   "compilerOptions": {
-    // ...existing options...
     "jsx": "react",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
-    // ...existing options...
   },
   "include": ["src"]
 }

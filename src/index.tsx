@@ -1,21 +1,18 @@
-import 'antd/dist/antd.css'; // <-- Use this for antd v3
+import 'antd/dist/antd.css';
 import React, { useState, DragEvent, FC, StrictMode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import FruitBook from './panels/FruitBookPanel';
-import AboutPanel from './panels/AboutPanel';
 import ResizableDraggablePanel from './components/ResizableDraggablePanel';
 import TermsIcon from './Icons/TermsIcon';
 import AboutIcon from './Icons/AboutIcon';
+import FruitViewIcon from './Icons/FruitViewIcon';
 import { MainWorkspace } from './components/MainWorkspace';
 import LoginComponent from './components/LoginComponent';
 import UserProfile from './components/UserProfile';
+import { panelList } from './panelList';
 
-// Panel data
-const panelList = [
-  { key: 'fruitbook', title: 'Fruit Book', content: <FruitBook /> },
-  { key: 'about', title: 'About', content: <AboutPanel /> },
-];
-
+/**
+ * Represents an open panel's state and position.
+ */
 type OpenPanel = {
   id: string;
   key: string;
@@ -27,6 +24,10 @@ type OpenPanel = {
   height: number;
 };
 
+/**
+ * Returns the default position and size for a new panel.
+ * @param count Number of currently open panels
+ */
 const getDefaultPanelPosition = (count: number) => ({
   x: 60 + count * 40,
   y: 60 + count * 40,
@@ -37,6 +38,14 @@ const getDefaultPanelPosition = (count: number) => ({
 const GRID_ROWS = 2;
 const GRID_COLS = 2;
 
+/**
+ * Calculates the position and size of a grid cell.
+ * @param row Row index
+ * @param col Column index
+ * @param containerWidth Width of the container
+ * @param containerHeight Height of the container
+ * @param navBarHeight Height of the navigation bar
+ */
 const getGridCellPosition = (
   row: number,
   col: number,
@@ -56,12 +65,20 @@ const getGridCellPosition = (
 
 const NAV_BAR_HEIGHT = 56; // px, must match your nav bar minHeight
 
+/**
+ * Checks if the user is logged in.
+ * @returns {boolean}
+ */
 const isLoggedIn = () => localStorage.getItem('isLoggedIn') === 'true';
 
 const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes
 
 const THEME_KEY = 'theme'; // localStorage key
 
+/**
+ * Gets the initial theme from localStorage or prompts the user.
+ * @returns {'dark' | 'light'}
+ */
 const getInitialTheme = () => {
   const stored = localStorage.getItem(THEME_KEY);
   if (stored === 'dark' || stored === 'light') return stored;
@@ -72,6 +89,9 @@ const getInitialTheme = () => {
   return theme;
 };
 
+/**
+ * Main application component.
+ */
 const App: FC = () => {
   const [openPanels, setOpenPanels] = useState<OpenPanel[]>([]);
   const [dragNavPanelKey, setDragNavPanelKey] = useState<string | null>(null);
@@ -81,18 +101,26 @@ const App: FC = () => {
   const [theme, setTheme] = useState<'dark' | 'light'>(getInitialTheme());
 
   // Drag from nav: set key in dataTransfer
+  /**
+   * Handles drag start from the navigation bar.
+   * @param key Panel key
+   */
   const onNavDragStart = (key: string) => (e: DragEvent<HTMLLIElement>) => {
     setDragNavPanelKey(key);
     e.dataTransfer.setData('panelKey', key);
   };
 
-  // Called by MainWorkspace to update container size and drop cell
+  /**
+   * Called by MainWorkspace to update container size and drop cell.
+   */
   const handleGridDropInfo = (info: { cell: { row: number; col: number } | null, size: { width: number; height: number } }) => {
     setDropCell(info.cell);
     setContainerSize(info.size);
   };
 
-  // Drop on main: open new panel at grid cell
+  /**
+   * Handles drop event on the main workspace to open a new panel.
+   */
   const onMainDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const key = e.dataTransfer.getData('panelKey');
@@ -133,16 +161,23 @@ const App: FC = () => {
     setDragNavPanelKey(null);
   };
 
+  /**
+   * Handles drag over event on the main workspace.
+   */
   const onMainDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
-  // Panel close
+  /**
+   * Closes a panel by id.
+   */
   const handleClose = (id: string) => {
     setOpenPanels(openPanels.filter(p => p.id !== id));
   };
 
-  // Panel move (drag inside main area)
+  /**
+   * Moves a panel by delta x and y.
+   */
   const handlePanelMove = (id: string, dx: number, dy: number) => {
     setOpenPanels(panels =>
       panels.map(p =>
@@ -153,7 +188,9 @@ const App: FC = () => {
     );
   };
 
-  // Panel resize
+  /**
+   * Resizes a panel by delta width and height.
+   */
   const handlePanelResize = (id: string, dw: number, dh: number) => {
     setOpenPanels(panels =>
       panels.map(p =>
@@ -196,6 +233,9 @@ const App: FC = () => {
     document.body.classList.add(`theme-${theme}`);
   }, [theme]);
 
+  /**
+   * Toggles the application theme between dark and light.
+   */
   const handleThemeToggle = () => {
     setTheme(prev => {
       const next = prev === 'dark' ? 'light' : 'dark';
@@ -210,14 +250,14 @@ const App: FC = () => {
       {navOpen && (
         <nav
           style={{
-            width: 60,
+            width: 90, // Increased width
             background: '#232b3e',
             padding: '0.5rem 0.25rem',
             borderRight: '1px solid #3e4a6b',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            minWidth: 60,
+            minWidth: 90, // Increased minWidth
             boxSizing: 'border-box',
           }}
         >
@@ -234,33 +274,47 @@ const App: FC = () => {
               <li
                 key={panel.key}
                 style={{
-                  marginBottom: 12,
+                  marginBottom: 16,
                   cursor: 'grab',
                   fontWeight: 'normal',
                   background: dragNavPanelKey === panel.key ? '#353b4a' : undefined,
-                  padding: 6,
-                  borderRadius: 8,
+                  padding: 8,
+                  borderRadius: 10,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  fontSize: 11,
+                  justifyContent: 'center',
+                  fontSize: 13,
                   color: '#e0e0e0',
                   width: '100%',
                   transition: 'background 0.2s',
+                  textAlign: 'center', // Center text
+                  minHeight: 64,
                 }}
                 draggable
                 onDragStart={onNavDragStart(panel.key)}
                 onDragEnd={() => setDragNavPanelKey(null)}
                 title={panel.title}
               >
-                <span style={{ marginBottom: 2 }}>
+                <span style={{ marginBottom: 4 }}>
                   {panel.key === 'fruitbook' ? (
                     <TermsIcon />
+                  ) : panel.key === 'fruitview' ? (
+                    <FruitViewIcon />
                   ) : panel.key === 'about' ? (
                     <AboutIcon />
                   ) : null}
                 </span>
-                <span>{panel.title}</span>
+                <span style={{
+                  width: '100%',
+                  textAlign: 'center', // Center text
+                  fontSize: 13,
+                  fontWeight: 500,
+                  lineHeight: 1.2,
+                  wordBreak: 'break-word',
+                }}>
+                  {panel.title}
+                </span>
               </li>
             ))}
           </ul>
@@ -393,6 +447,9 @@ const App: FC = () => {
   );
 };
 
+/**
+ * Root component that handles login state.
+ */
 const Root: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 

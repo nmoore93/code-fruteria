@@ -19,7 +19,20 @@ const gridStyle: React.CSSProperties = {
   margin: 0,
 };
 
-const FruitEnrichmentPanel: React.FC<{ fruit: any, onClose: () => void }> = ({ fruit, onClose }) => {
+/**
+ * Props for FruitEnrichmentPanel.
+ */
+interface FruitEnrichmentPanelProps {
+  fruit: any;
+  onClose: () => void;
+}
+
+/**
+ * Displays enrichment details for a fruit in a draggable, resizable panel.
+ * @param fruit The fruit object to display details for.
+ * @param onClose Callback to close the panel.
+ */
+const FruitEnrichmentPanel: React.FC<FruitEnrichmentPanelProps> = ({ fruit, onClose }) => {
   const [panelState, setPanelState] = useState({
     x: 200,
     y: 120,
@@ -27,10 +40,13 @@ const FruitEnrichmentPanel: React.FC<{ fruit: any, onClose: () => void }> = ({ f
     height: 220,
   });
 
+  /**
+   * Column definitions for the AG Grid.
+   */
   const columnDefs: ColDef<{ property: string; value: any; }>[] = [
     {
       headerName: "Property",
-      field: "property", // must match the key in your row data
+      field: "property",
       flex: 1,
       cellStyle: {
         fontWeight: 700,
@@ -40,7 +56,7 @@ const FruitEnrichmentPanel: React.FC<{ fruit: any, onClose: () => void }> = ({ f
     },
     {
       headerName: "Value",
-      field: "value", // must match the key in your row data
+      field: "value",
       flex: 2,
       cellStyle: {
         color: "#333",
@@ -49,6 +65,9 @@ const FruitEnrichmentPanel: React.FC<{ fruit: any, onClose: () => void }> = ({ f
     },
   ];
 
+  /**
+   * Memoized row data for the grid.
+   */
   const rowData = useMemo(() => [
     { property: 'ID', value: fruit.id },
     { property: 'Country', value: fruit.country },
@@ -57,6 +76,11 @@ const FruitEnrichmentPanel: React.FC<{ fruit: any, onClose: () => void }> = ({ f
     { property: 'Details', value: fruit.details },
   ], [fruit]);
 
+  /**
+   * Handles moving the panel.
+   * @param dx Delta X
+   * @param dy Delta Y
+   */
   const handleMove = (dx: number, dy: number) => {
     setPanelState(prev => ({
       ...prev,
@@ -65,6 +89,11 @@ const FruitEnrichmentPanel: React.FC<{ fruit: any, onClose: () => void }> = ({ f
     }));
   };
 
+  /**
+   * Handles resizing the panel.
+   * @param dw Delta width
+   * @param dh Delta height
+   */
   const handleResize = (dw: number, dh: number) => {
     setPanelState(prev => ({
       ...prev,
