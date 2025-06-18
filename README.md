@@ -47,6 +47,7 @@ But, like a forgotten banana, things have gotten a little… mushy:
 - We’re stuck on React 16—let’s peel up to React 18 (and maybe even React 19 if you’re feeling wild).
 - The light theme could be fresher than a lemon on a summer day.
 - There’s more juicy work to do, but let’s not bite off more than we can chew.
+- _Some files are just lying around unused—let’s clean up the codebase and compost the leftovers!_
 
 Who’s ready to modernize this digital fruit bazaar? 🍇💻
 
