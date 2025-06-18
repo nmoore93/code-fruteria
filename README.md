@@ -28,6 +28,7 @@ Welcome to the juiciest repo on GitHub! This is your backstage pass to a mock lo
   - **user** / **password**
 - _Yes, our security is softer than an overripe peach. Maybe engineers should take security a bit more seriously?_
 - **Bonus:** If you want to show off your fullstack skills, build a real backend for authentication (Node.js or your favorite language) and earn extra fruit salad points!
+- _P.S.: Feel free to use AI tools like **Amazon Q**, **GitHub Copilot**, or your favorite code assistant to help you out!_
 
 ---
 
@@ -43,7 +44,7 @@ This app lets you swap strawberries for pineapples and pretend you’re the Gord
 But, like a forgotten banana, things have gotten a little… mushy:
 
 - The codebase is a bit overripe and needs a refactor.
-- We’re stuck on React 17—let’s peel up to React 18 (and maybe even React 19 if you’re feeling wild).
+- We’re stuck on React 16—let’s peel up to React 18 (and maybe even React 19 if you’re feeling wild).
 - The light theme could be fresher than a lemon on a summer day.
 - There’s more juicy work to do, but let’s not bite off more than we can chew.
 
