@@ -1,3 +1,4 @@
+import 'antd/dist/antd.css'; // <-- Use this for antd v3
 import React, { useState, DragEvent, FC, StrictMode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import FruitBook from './panels/FruitBookPanel';
@@ -59,12 +60,25 @@ const isLoggedIn = () => localStorage.getItem('isLoggedIn') === 'true';
 
 const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes
 
+const THEME_KEY = 'theme'; // localStorage key
+
+const getInitialTheme = () => {
+  const stored = localStorage.getItem(THEME_KEY);
+  if (stored === 'dark' || stored === 'light') return stored;
+  // Ask user if not set
+  const userPref = window.confirm('Use dark theme? Click OK for dark, Cancel for light.');
+  const theme = userPref ? 'dark' : 'light';
+  localStorage.setItem(THEME_KEY, theme);
+  return theme;
+};
+
 const App: FC = () => {
   const [openPanels, setOpenPanels] = useState<OpenPanel[]>([]);
   const [dragNavPanelKey, setDragNavPanelKey] = useState<string | null>(null);
   const [navOpen, setNavOpen] = useState<boolean>(false);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [dropCell, setDropCell] = useState<{ row: number; col: number } | null>(null);
+  const [theme, setTheme] = useState<'dark' | 'light'>(getInitialTheme());
 
   // Drag from nav: set key in dataTransfer
   const onNavDragStart = (key: string) => (e: DragEvent<HTMLLIElement>) => {
@@ -176,8 +190,22 @@ const App: FC = () => {
     };
   }, []);
 
+  // Set theme class on body or root
+  useEffect(() => {
+    document.body.classList.remove('theme-dark', 'theme-light');
+    document.body.classList.add(`theme-${theme}`);
+  }, [theme]);
+
+  const handleThemeToggle = () => {
+    setTheme(prev => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      localStorage.setItem(THEME_KEY, next);
+      return next;
+    });
+  };
+
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div className={`app-root theme-${theme}`} style={{ display: 'flex', height: '100vh' }}>
       {/* Navigation Bar */}
       {navOpen && (
         <nav
@@ -332,10 +360,14 @@ const App: FC = () => {
             <div style={{ flex: 1 }} />
             {/* UserProfile on the right */}
             <div style={{ marginRight: 32 }}>
-              <UserProfile onLogout={() => {
-                localStorage.removeItem('isLoggedIn');
-                window.dispatchEvent(new Event('login-success'));
-              }} />
+              <UserProfile
+                onLogout={() => {
+                  localStorage.removeItem('isLoggedIn');
+                  window.dispatchEvent(new Event('login-success'));
+                }}
+                onThemeToggle={handleThemeToggle}
+                theme={theme}
+              />
             </div>
           </div>
           {openPanels.length === 0 ? (
