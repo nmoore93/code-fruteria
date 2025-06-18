@@ -24,8 +24,10 @@ Welcome to the juiciest repo on GitHub! This is your backstage pass to a mock lo
 - Check out `auth/mockLogin.ts` for a taste of our authentication magic.
 - Exports a `mockLogin` function that pretends to check your credentials.
 - Try logging in as:
-  - **admin** / **password**
+  - **admin** / **1234**
   - **user** / **password**
+- _Yes, our security is softer than an overripe peach. Maybe engineers should take security a bit more seriously?_
+- **Bonus:** If you want to show off your fullstack skills, build a real backend for authentication (Node.js or your favorite language) and earn extra fruit salad points!
 
 ---
 
