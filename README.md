@@ -48,6 +48,7 @@ But, like a forgotten banana, things have gotten a little… mushy:
 - The light theme could be fresher than a lemon on a summer day.
 - There’s more juicy work to do, but let’s not bite off more than we can chew.
 - _Some files are just lying around unused—let’s clean up the codebase and compost the leftovers!_
+- **Bonus:** Migrate the build system from **Webpack** to **Vite** for a faster, fresher development experience!
 
 Who’s ready to modernize this digital fruit bazaar? 🍇💻
 
@@ -70,3 +71,21 @@ Who’s ready to modernize this digital fruit bazaar? 🍇💻
 ---
 
 🍏 **Ready to squeeze the most out of this repo? Fork it, juice it, and make it your own!**
+
+---
+
+## 🥭 Bonus
+
+- **Migrate from Webpack to Vite:**  
+  Swap out the old Webpack setup for [Vite](https://vitejs.dev/) to enjoy lightning-fast hot module reloading and a simpler config.  
+  _Tip: Vite works great with React 18+ and will make your dev workflow as snappy as a fresh snap pea!_
+- **Upgrade to React 19:**  
+  Take it to the next level by upgrading the project to [React 19](https://react.dev/blog/2024/04/25/react-v19.0.0), and try out the latest features!
+- **Implement a real backend for authentication:**  
+  Replace the mock frontend authentication with a real backend (Node.js or your favorite language).  
+  - Create an authentication server (REST or GraphQL) to handle login and user info.
+  - Update the frontend to retrieve authentication and user data from the backend instead of mocking it.
+- **Extra Credit:**  
+  - Document any migration steps or gotchas you encounter.
+  - Compare build/start times before and after the migration.
+  - Share your favorite Vite plugin for React projects!
