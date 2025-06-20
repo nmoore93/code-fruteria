@@ -68,12 +68,6 @@ Who’s ready to modernize this digital fruit bazaar? 🍇💻
 - **Upgrade the grid/layout** so panels can go horizontal, vertical, or do the cha-cha for better visual combos.
 - **Fix the theme switch** (light/dark)—right now, it’s more confused than a kiwi in a fruit salad.
 
----
-
-🍏 **Ready to squeeze the most out of this repo? Fork it, juice it, and make it your own!**
-
----
-
 ## 🥭 Bonus
 
 - **Migrate from Webpack to Vite:**  
@@ -89,3 +83,9 @@ Who’s ready to modernize this digital fruit bazaar? 🍇💻
   - Document any migration steps or gotchas you encounter.
   - Compare build/start times before and after the migration.
   - Share your favorite Vite plugin for React projects!
+
+---
+
+🍏 **Ready to squeeze the most out of this repo? Fork it, juice it, and make it your own!**
+
+---
