@@ -96,7 +96,6 @@ const FruitEnrichmentPanel: React.FC<FruitEnrichmentPanelProps> = ({
 
   return (
     <ResizableDraggablePanel
-      id={`fruit-enrichment-${fruit.id}`}
       title={`${fruit.name} Enrichment`}
       content={
         <div style={{ height: "100%", width: "100%" }}>
