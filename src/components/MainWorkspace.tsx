@@ -47,11 +47,11 @@ export const MainWorkspace: React.FC<MainWorkspaceProps> = ({
 
   // Only show overlay when dragging from nav (not when dragging panels inside)
   useEffect(() => {
-    const handleDragEnter = (e: DragEvent) => {
+    const handleDragEnter = () => {
       // Only set dragging if dragging from outside (nav)
       setDragging(true);
     };
-    const handleDragLeave = (e: DragEvent) => {
+    const handleDragLeave = () => {
       setDragging(false);
       setActiveCell(null);
       if (onGridDropInfo) onGridDropInfo({ cell: null, size: containerSize });
@@ -67,7 +67,6 @@ export const MainWorkspace: React.FC<MainWorkspaceProps> = ({
         node.removeEventListener("dragleave", handleDragLeave as any);
       }
     };
-    // eslint-disable-next-line
   }, [containerSize, onGridDropInfo]);
 
   // Listen for panel drag events (custom event)

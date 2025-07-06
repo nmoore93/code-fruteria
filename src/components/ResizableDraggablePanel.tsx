@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 
 type Props = {
-  id: string;
   title: string;
   content: React.ReactNode;
   x: number;
@@ -16,7 +15,6 @@ type Props = {
 };
 
 const ResizableDraggablePanel: React.FC<Props> = ({
-  id,
   title,
   content,
   x,

@@ -25,17 +25,6 @@ type OpenPanel = {
   height: number;
 };
 
-/**
- * Returns the default position and size for a new panel.
- * @param count Number of currently open panels
- */
-const getDefaultPanelPosition = (count: number) => ({
-  x: 60 + count * 40,
-  y: 60 + count * 40,
-  width: 700,
-  height: 420,
-});
-
 const GRID_ROWS = 2;
 const GRID_COLS = 2;
 
