@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "types": ["vitest", "@testing-library/jest-dom"]
   },
-  "include": ["src"]
+  "include": ["src", "tests/**/*.ts", "tests/**/*.tsx"]
 }
