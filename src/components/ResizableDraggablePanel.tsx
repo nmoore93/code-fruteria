@@ -66,6 +66,12 @@ const ResizableDraggablePanel: React.FC<Props> = ({
         const dw = moveEvent.clientX - resizeStart.current.x;
         const dh = moveEvent.clientY - resizeStart.current.y;
         onResize(dw, dh);
+        resizeStart.current = {
+          x: moveEvent.clientX,
+          y: moveEvent.clientY,
+          width: resizeStart.current.width + dw,
+          height: resizeStart.current.height + dh,
+        };
       }
     };
     const handleMouseUp = () => {
