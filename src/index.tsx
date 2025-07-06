@@ -345,14 +345,16 @@ const App: FC = () => {
             overflow: "hidden",
             height: "100%",
             width: "100%",
+            // While dragging, prevent pointer events so that dragging over other elements below the grid drop overlay does not hide the overlay
+            pointerEvents: !!dragNavPanelKey ? "none" : "auto",
           }}
         >
           {/* Top nav branding */}
           <div
             style={{
               width: "100%",
-              background: "linear-gradient(90deg, #2b3556 0%, #3e4a6b 100%)",
-              color: "#fff",
+              background: "var(--header-background)",
+              color: "var(--text-color)",
               padding: "0.5rem 1.5rem",
               fontWeight: 600,
               fontSize: 20,
@@ -373,7 +375,7 @@ const App: FC = () => {
               style={{
                 background: "transparent",
                 border: "none",
-                color: "#fff",
+                color: "var(--text-color)",
                 fontSize: 26,
                 cursor: "pointer",
                 marginRight: 20,
@@ -397,7 +399,7 @@ const App: FC = () => {
                       y1="7"
                       x2="21"
                       y2="21"
-                      stroke="#fff"
+                      stroke="var(--text-color)"
                       strokeWidth="2.5"
                       strokeLinecap="round"
                     />
@@ -406,7 +408,7 @@ const App: FC = () => {
                       y1="7"
                       x2="7"
                       y2="21"
-                      stroke="#fff"
+                      stroke="var(--text-color)"
                       strokeWidth="2.5"
                       strokeLinecap="round"
                     />
@@ -414,9 +416,27 @@ const App: FC = () => {
                 ) : (
                   // Hamburger icon
                   <svg width="28" height="28" viewBox="0 0 28 28">
-                    <rect y="6" width="28" height="3" rx="1.5" fill="#fff" />
-                    <rect y="13" width="28" height="3" rx="1.5" fill="#fff" />
-                    <rect y="20" width="28" height="3" rx="1.5" fill="#fff" />
+                    <rect
+                      y="6"
+                      width="28"
+                      height="3"
+                      rx="1.5"
+                      fill="var(--text-color)"
+                    />
+                    <rect
+                      y="13"
+                      width="28"
+                      height="3"
+                      rx="1.5"
+                      fill="var(--text-color)"
+                    />
+                    <rect
+                      y="20"
+                      width="28"
+                      height="3"
+                      rx="1.5"
+                      fill="var(--text-color)"
+                    />
                   </svg>
                 )}
               </span>
@@ -428,7 +448,7 @@ const App: FC = () => {
                 fontWeight: 700,
                 fontSize: 22,
                 letterSpacing: 2,
-                color: "#fff",
+                color: "var(--text-color)",
                 textShadow: "0 1px 2px #0006",
                 userSelect: "none",
                 textTransform: "uppercase",
