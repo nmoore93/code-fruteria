@@ -1,4 +1,4 @@
-import "antd/dist/antd.css";
+// import "antd/dist/antd.css";
 import React, { useState, DragEvent, FC, StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom";
 import ResizableDraggablePanel from "./components/ResizableDraggablePanel";

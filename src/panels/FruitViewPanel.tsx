@@ -60,7 +60,7 @@ export const FruitViewPanel: React.FC = () => {
           minWidth: 350,
           maxWidth: 400,
         }}
-        bodyStyle={{ padding: 32 }}
+        styles={{ body: { padding: 32 } }}
       >
         <Title level={3} style={{ marginTop: 0, marginBottom: 24 }}>
           Fruit View

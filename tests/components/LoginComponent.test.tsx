@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import userEvent from "@testing-library/user-event";
 
@@ -19,17 +19,21 @@ describe("Login Component", () => {
     render(<LoginComponent />);
 
     expect(
-      screen.queryByText("Please input your username!")
+      screen.queryByText("Please input your username!"),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText("Please input your password!")
+      screen.queryByText("Please input your password!"),
     ).not.toBeInTheDocument();
 
     const loginButton = screen.getByRole("button", { name: "Login" });
     await user.click(loginButton);
 
-    expect(screen.getByText("Please input your username!")).toBeVisible();
-    expect(screen.getByText("Please input your password!")).toBeVisible();
+    await waitFor(() =>
+      expect(screen.getByText("Please input your username!")).toBeVisible(),
+    );
+    await waitFor(() =>
+      expect(screen.getByText("Please input your password!")).toBeVisible(),
+    );
   });
 
   it("displays invalid credentials message when the username is incorrect", async () => {

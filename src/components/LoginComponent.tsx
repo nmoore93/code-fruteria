@@ -11,24 +11,18 @@ class LoginComponent extends React.Component<
 > {
   state = { errorMsg: "" };
 
-  handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    this.props.form.validateFields((err: any, values: any) => {
-      if (!err) {
-        const { username, password } = values;
-        if (username === "admin" && password === "1234") {
-          if (this.props.onLoginSuccess) {
-            this.props.onLoginSuccess();
-          }
-        } else {
-          this.setState({ errorMsg: "Invalid credentials" });
-        }
+  handleSubmit = (values: any) => {
+    const { username, password } = values;
+    if (username === "admin" && password === "1234") {
+      if (this.props.onLoginSuccess) {
+        this.props.onLoginSuccess();
       }
-    });
+    } else {
+      this.setState({ errorMsg: "Invalid credentials" });
+    }
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const { errorMsg } = this.state;
 
     return (
@@ -49,7 +43,7 @@ class LoginComponent extends React.Component<
             background: "#232b3e",
             border: "1px solid #3e4a6b",
           }}
-          bodyStyle={{ padding: 32 }}
+          styles={{ body: { padding: 32 } }}
         >
           <Typography.Title
             level={2}
@@ -67,53 +61,49 @@ class LoginComponent extends React.Component<
           </Typography.Title>
           <Form
             layout="vertical"
-            onSubmit={this.handleSubmit}
+            onFinish={this.handleSubmit}
             autoComplete="off"
           >
             <Form.Item
+              name="username"
+              rules={[
+                { required: true, message: "Please input your username!" },
+              ]}
               label={
                 <span style={{ color: "#e0e0e0", fontWeight: 500 }}>
                   Username
                 </span>
               }
             >
-              {getFieldDecorator("username", {
-                rules: [
-                  { required: true, message: "Please input your username!" },
-                ],
-              })(
-                <Input
-                  autoFocus
-                  style={{
-                    background: "#232b3e",
-                    color: "#fff",
-                    border: "1px solid #3e4a6b",
-                  }}
-                  placeholder="Enter your username"
-                />,
-              )}
+              <Input
+                autoFocus
+                style={{
+                  background: "#232b3e",
+                  color: "#fff",
+                  border: "1px solid #3e4a6b",
+                }}
+                placeholder="Enter your username"
+              />
             </Form.Item>
             <Form.Item
+              name={"password"}
+              rules={[
+                { required: true, message: "Please input your password!" },
+              ]}
               label={
                 <span style={{ color: "#e0e0e0", fontWeight: 500 }}>
                   Password
                 </span>
               }
             >
-              {getFieldDecorator("password", {
-                rules: [
-                  { required: true, message: "Please input your password!" },
-                ],
-              })(
-                <Input.Password
-                  style={{
-                    background: "#232b3e",
-                    color: "#fff",
-                    border: "1px solid #3e4a6b",
-                  }}
-                  placeholder="Enter your password"
-                />,
-              )}
+              <Input.Password
+                style={{
+                  background: "#232b3e",
+                  color: "#fff",
+                  border: "1px solid #3e4a6b",
+                }}
+                placeholder="Enter your password"
+              />
             </Form.Item>
             {errorMsg && (
               <Form.Item>
@@ -145,4 +135,4 @@ class LoginComponent extends React.Component<
   }
 }
 
-export default Form.create()(LoginComponent);
+export default LoginComponent;
