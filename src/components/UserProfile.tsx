@@ -119,7 +119,9 @@ const UserProfile: React.FC<UserProfileProps> = ({
             defaultChecked
           />
           <span style={{ marginLeft: 8, color: "#b0b4c1", fontSize: 14 }}>
-            {theme === "dark" ? "Light" : "Dark"} Theme
+            {theme === "dark"
+              ? "Change to light theme?"
+              : "Change to dark theme?"}
           </span>
         </div>
       )}
