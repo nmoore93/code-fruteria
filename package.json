@@ -10,8 +10,8 @@
     "test": "vitest run",
     "lint:check": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
-    "format:check": "npx prettier . --check",
-    "format:fix": "npx prettier . --write"
+    "format:check": "npx prettier --check 'src//**/*.{js,jsx,ts,tsx}'",
+    "format:fix": "npx prettier --write 'src//**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
     "ag-grid-react": "^33.3.2",
