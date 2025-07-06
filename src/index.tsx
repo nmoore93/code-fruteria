@@ -9,6 +9,7 @@ import { MainWorkspace } from "./components/MainWorkspace";
 import LoginComponent from "./components/LoginComponent";
 import UserProfile from "./components/UserProfile";
 import { panelList } from "./panelList";
+import "../styles/theme.less";
 
 /**
  * Represents an open panel's state and position.
@@ -351,7 +352,7 @@ const App: FC = () => {
           style={{
             flex: 1,
             position: "relative",
-            background: "#232b3e",
+            background: "var(--background-color)",
             overflow: "hidden",
             height: "100%",
             width: "100%",
