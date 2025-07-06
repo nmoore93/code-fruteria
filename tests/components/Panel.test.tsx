@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import Panel from "../../../src/components/Panel";
+import Panel from "../../src/components/Panel";
 
 describe("Panel Component", () => {
   it("should display the passed in title", () => {
