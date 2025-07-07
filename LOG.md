@@ -4,6 +4,8 @@ This is just a rough list of what I did within the project (feel free to view th
 - Added an nvmrc file and used the latest TS version of node.
 - Added git ignore to prevent node modules being committed.
 - Added eslint and prettier t help format code using their defaults for the most part.
+- Updated react version and package versions to more recent versions.
+- Made changes mainly around the form due to package updates and updated API for forms.
 - Fix theme switching and use theme setting for some simple changes such as main background color and header color.
 - Update the grid overlay so it does not flicker or hide if you drag over components 'behind' the overlay such as the header or no panel placed text on the main screen.
 - Updated the panel resizing so that it resets the ref per update, it appeared that resizing was continuing to add more and more as you dragged your mouse.
