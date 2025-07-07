@@ -101,3 +101,5 @@ Additional:
 - To run prettier for code formatting:
   - `npm run format:check` to report issues
   - `npm run format:fix` to fix issues that can be automatically
+
+- I have added a LOG.md file as well for reference of my changes.
