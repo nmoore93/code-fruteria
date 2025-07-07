@@ -2,18 +2,19 @@
 
 Welcome to the juiciest repo on GitHub! This is your backstage pass to a mock login system and the world’s first* digital fruit trading floor. (*Probably.)
 
-> **Note:** This project runs best on **Node.js v16.14.2**.  
-> If you’re using a different version, you might end up with banana peels in your stack trace.
+> **Note:** This project runs best on **Node.js v22.17.0**.
+> If you’re using a different version, you might end up with banana peels in your stack trace. If using a tool such as NVM, an nvmrc file is provided
 
 ## 🥝 Getting Started
 
-1. **Install dependencies**  
+1. **Install dependencies**
    _(Don’t worry, no actual fruit required.)_
+
    ```bash
    npm install
    ```
 
-2. **Start the development server**  
+2. **Start the development server**
    _(Let the fruit fiesta begin!)_
    ```bash
    npm run start
@@ -38,7 +39,7 @@ This repo is a stripped-down, vitamin-packed version of the code-fruit project. 
 
 🎉 **Calling all code wizards and fruit fanatics!** 🍌🍎
 
-Ever dreamed of trading apples for bananas like a Wall Street pro? Now’s your chance!  
+Ever dreamed of trading apples for bananas like a Wall Street pro? Now’s your chance!
 This app lets you swap strawberries for pineapples and pretend you’re the Gordon Gekko of the produce aisle. 🍍📊
 
 But, like a forgotten banana, things have gotten a little… mushy:
@@ -58,7 +59,7 @@ Who’s ready to modernize this digital fruit bazaar? 🍇💻
 
 ## 🍉 Acceptance Criteria
 
-- Upgrade the project to **React 18**.  
+- Upgrade the project to **React 18**.
   - Upgrading to **React 19** is a bonus, but React 18 is your first pit stop.
 - Add **unit tests** before you start refactoring. (No squishy bugs allowed!)
 - Upgrade all dependencies so they play nicely with React 18 (or 19, if you’re feeling zesty).
@@ -70,16 +71,16 @@ Who’s ready to modernize this digital fruit bazaar? 🍇💻
 
 ## 🥭 Bonus
 
-- **Migrate from Webpack to Vite:**  
-  Swap out the old Webpack setup for [Vite](https://vitejs.dev/) to enjoy lightning-fast hot module reloading and a simpler config.  
+- **Migrate from Webpack to Vite:**
+  Swap out the old Webpack setup for [Vite](https://vitejs.dev/) to enjoy lightning-fast hot module reloading and a simpler config.
   _Tip: Vite works great with React 18+ and will make your dev workflow as snappy as a fresh snap pea!_
-- **Upgrade to React 19:**  
+- **Upgrade to React 19:**
   Take it to the next level by upgrading the project to [React 19](https://react.dev/blog/2024/04/25/react-v19.0.0), and try out the latest features!
-- **Implement a real backend for authentication:**  
-  Replace the mock frontend authentication with a real backend (Node.js or your favorite language).  
+- **Implement a real backend for authentication:**
+  Replace the mock frontend authentication with a real backend (Node.js or your favorite language).
   - Create an authentication server (REST or GraphQL) to handle login and user info.
   - Update the frontend to retrieve authentication and user data from the backend instead of mocking it.
-- **Extra Credit:**  
+- **Extra Credit:**
   - Document any migration steps or gotchas you encounter.
   - Compare build/start times before and after the migration.
   - Share your favorite Vite plugin for React projects!
@@ -89,3 +90,14 @@ Who’s ready to modernize this digital fruit bazaar? 🍇💻
 🍏 **Ready to squeeze the most out of this repo? Fork it, juice it, and make it your own!**
 
 ---
+
+Additional:
+
+- To run the tests:
+  - `npm run test`
+- To run linting:
+  - `npm run lint:check` to report issues
+  - `npm run lint:fix` tp fix issues that can be automatically
+- To run prettier for code formatting:
+  - `npm run format:check` to report issues
+  - `npm run format:fix` to fix issues that can be automatically
